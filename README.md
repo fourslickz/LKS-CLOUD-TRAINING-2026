@@ -2,14 +2,53 @@
 
 REST API sederhana untuk mengelola data siswa menggunakan Node.js, Express, dan MariaDB.
 
-## Menjalankan
+## Menjalankan backend dan frontend
 
-1. Jalankan MariaDB dengan Docker Compose mengikuti petunjuk di `database-container/README.md`, atau siapkan MariaDB sendiri dan jalankan `backend/database/schema.sql`.
-2. Masuk ke folder backend, salin `.env.example` menjadi `.env`, lalu sesuaikan konfigurasi database.
-3. Jalankan `npm install`, lalu `npm run dev` untuk mode pengembangan atau `npm start`.
-4. Buka `http://localhost:3000` untuk frontend, atau akses endpoint API langsung di alamat yang sama.
+Frontend disajikan oleh Express, jadi cukup jalankan database dan backend. Setelah backend aktif, halaman frontend dan API sama-sama tersedia di `http://localhost:3000`.
 
-Frontend berada di folder `frontend/` dan disajikan otomatis oleh Express. Dari halaman tersebut, admin dapat mencari, menambah, mengedit, dan menghapus data siswa.
+### 1. Jalankan MariaDB
+
+Buka terminal pertama dari root proyek:
+
+```sh
+cd database-container
+cp .env.example .env
+docker compose up -d --build
+```
+
+Compose membuat database dan tabel secara otomatis pada inisialisasi pertama. Database berjalan pada `localhost:3307`. Petunjuk tambahan tersedia di [database-container/README.md](database-container/README.md).
+
+### Migrasi database yang sudah ada
+
+Jika database sudah dibuat sebelum kolom foto ditambahkan, jalankan migrasi setelah MariaDB aktif. Dari root proyek:
+
+```sh
+cd database-container
+docker compose exec -T mariadb mariadb -u siswa_app -psiswa_app_password db_siswa < ../backend/database/migrations/001_add_foto_url.sql
+```
+
+Migrasi ini menambahkan kolom `foto_url` dan aman dijalankan ulang. Database baru yang dibuat lewat Compose sudah mendapat kolom tersebut dari `backend/database/schema.sql`, jadi tidak perlu menjalankan migrasi secara terpisah. Jika kredensial pada `database-container/.env` diubah, sesuaikan username dan password pada perintah di atas.
+
+### 2. Siapkan dan jalankan backend
+
+Buka terminal kedua dari root proyek:
+
+```sh
+cd backend
+cp .env.example .env
+npm install
+npm start
+```
+
+File `backend/.env.example` sudah berisi konfigurasi koneksi untuk MariaDB Compose. Jika kredensial atau port di `database-container/.env` diubah, sesuaikan juga nilai di `backend/.env`.
+
+Saat berhasil, terminal menampilkan alamat `http://localhost:3000`.
+
+### 3. Buka frontend
+
+Buka `http://localhost:3000` di browser. Frontend berada di folder `frontend/` dan dilayani otomatis oleh backend. Halaman ini dapat mencari, menambah, mengedit, dan menghapus data siswa, termasuk mengunggah foto.
+
+Untuk memastikan API aktif, buka `http://localhost:3000/api/health`.
 
 ## Endpoint
 
