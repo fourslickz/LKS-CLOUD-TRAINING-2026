@@ -1,0 +1,17 @@
+{
+  "name": "data-siswa-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "REST API data siswa menggunakan Node.js, Express, dan MariaDB",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^2.4.0",
+    "mysql2": "^3.12.0"
+  }
+}

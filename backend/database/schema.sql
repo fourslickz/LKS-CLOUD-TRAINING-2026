@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS db_siswa
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE db_siswa;
+
+CREATE TABLE IF NOT EXISTS siswa (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nis VARCHAR(30) NOT NULL,
+  nama VARCHAR(120) NOT NULL,
+  kelas VARCHAR(30) NOT NULL,
+  jurusan VARCHAR(100) NOT NULL,
+  alamat TEXT NULL,
+  tanggal_lahir DATE NULL,
+  foto_url VARCHAR(255) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_siswa_nis (nis),
+  KEY idx_siswa_nama (nama),
+  KEY idx_siswa_kelas (kelas)
+);

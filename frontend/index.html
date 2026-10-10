@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f7fb" />
+    <title>Data Siswa — Ruang Kelas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Ruang Kelas beranda">
+          <span class="brand-mark">rk</span>
+          <span class="brand-copy"><strong>ruangkelas</strong><small>ADMIN SEKOLAH</small></span>
+        </a>
+        <div class="nav-label">MENU UTAMA</div>
+        <nav aria-label="Menu utama">
+          <a class="nav-item active" href="#siswa"><span class="nav-icon">▦</span>Data siswa</a>
+          <a class="nav-item muted" href="#ringkasan" aria-disabled="true"><span class="nav-icon">◷</span>Ringkasan</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card"><span class="help-icon">?</span><strong>Butuh bantuan?</strong><p>Kelola data siswa dengan lebih mudah.</p></div>
+          <div class="profile"><div class="avatar">AD</div><div><strong>Admin Sekolah</strong><small>Administrator</small></div><span class="profile-more">···</span></div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="siswa">
+        <header class="topbar">
+          <div class="breadcrumb">Manajemen <span>/</span> <strong>Data siswa</strong></div>
+          <div class="topbar-right"><span class="today" id="todayLabel"></span><span class="top-avatar">AD</span></div>
+        </header>
+
+        <section class="page-intro">
+          <div><div class="eyebrow"><span class="eyebrow-dot"></span>ADMINISTRASI SEKOLAH</div><h1>Data siswa</h1><p>Kelola informasi siswa dalam satu tempat.</p></div>
+          <button class="button button-primary" id="addStudentButton"><span class="button-plus">＋</span> Tambah siswa</button>
+        </section>
+
+        <section class="stats-grid" aria-label="Ringkasan data siswa">
+          <article class="stat-card"><div class="stat-top"><span>Total siswa</span><span class="stat-icon blue">♙</span></div><strong id="totalStudents">—</strong><small>Data terdaftar</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Rombongan belajar</span><span class="stat-icon violet">▤</span></div><strong id="totalClasses">—</strong><small>Kelas berbeda</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Program keahlian</span><span class="stat-icon amber">✳</span></div><strong id="totalMajors">—</strong><small>Jurusan tersedia</small></article>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><div><h2>Daftar siswa</h2><p>Informasi lengkap siswa yang terdaftar.</p></div><div class="record-count" id="recordCount">Memuat data…</div></div>
+          <div class="toolbar"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Cari nama, NIS, kelas, atau jurusan…" autocomplete="off" /></label><button class="button button-outline" id="refreshButton" title="Muat ulang data"><span class="refresh-icon">↻</span><span class="refresh-text">Muat ulang</span></button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>SISWA</th><th>NIS</th><th>KELAS</th><th>JURUSAN</th><th>TANGGAL LAHIR</th><th class="action-heading">AKSI</th></tr></thead>
+              <tbody id="studentRows"><tr><td colspan="6" class="table-state">Memuat data siswa…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="pageInfo">—</span><div class="pagination"><button id="previousPage" class="page-button" aria-label="Halaman sebelumnya">‹</button><span id="pageNumber">1</span><button id="nextPage" class="page-button" aria-label="Halaman berikutnya">›</button></div></div>
+        </section>
+        <footer class="footer-note">Ruang Kelas <span>·</span> Sistem administrasi sekolah</footer>
+      </main>
+    </div>
+
+    <dialog id="studentDialog" class="student-dialog">
+      <form id="studentForm" novalidate>
+        <div class="dialog-heading"><div><div class="eyebrow"><span class="eyebrow-dot"></span>FORMULIR SISWA</div><h2 id="dialogTitle">Tambah siswa</h2><p>Lengkapi informasi siswa di bawah ini.</p></div><button type="button" class="close-button" id="closeDialog" aria-label="Tutup">×</button></div>
+        <div id="formError" class="form-error" role="alert" hidden></div>
+        <input type="hidden" id="studentId" />
+        <div class="form-grid">
+          <label class="field"><span>NIS <b>*</b></span><input name="nis" required maxlength="30" placeholder="Contoh: 2026001" /></label>
+          <label class="field"><span>Nama lengkap <b>*</b></span><input name="nama" required maxlength="120" placeholder="Nama siswa" /></label>
+          <label class="field"><span>Kelas <b>*</b></span><input name="kelas" required maxlength="30" placeholder="Contoh: XI RPL 1" /></label>
+          <label class="field"><span>Jurusan <b>*</b></span><input name="jurusan" required maxlength="100" placeholder="Nama program keahlian" /></label>
+          <label class="field"><span>Tanggal lahir</span><input name="tanggal_lahir" type="date" /></label>
+          <label class="field field-full"><span>Alamat</span><textarea name="alamat" rows="3" placeholder="Alamat tempat tinggal siswa"></textarea></label>
+          <div class="photo-field field-full"><label class="field" for="studentPhoto"><span>Foto siswa</span><input id="studentPhoto" name="foto" type="file" accept="image/jpeg,image/png,image/webp" /></label><div class="photo-help">Format JPG, PNG, atau WebP. Ukuran maksimal 5 MB.</div><div id="photoPreview" class="photo-preview" hidden><img id="photoPreviewImage" alt="Preview foto siswa" /><span id="photoPreviewName"></span></div></div>
+        </div>
+        <div class="dialog-actions"><button type="button" class="button button-outline" id="cancelDialog">Batal</button><button type="submit" class="button button-primary" id="saveStudentButton">Simpan siswa</button></div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

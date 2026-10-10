@@ -1,0 +1,2 @@
+ALTER TABLE siswa
+  ADD COLUMN IF NOT EXISTS foto_url VARCHAR(255) NULL AFTER tanggal_lahir;
